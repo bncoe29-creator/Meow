@@ -5,13 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>UNIV_SECURE_SRV_404</title>
     <style>
-        body { background: black; color: #00FF00; font-family: 'Courier New', Courier, monospace; height: 100vh; margin: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        #terminal { width: 90%; max-width: 500px; padding: 20px; border: 1px solid #00FF00; box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); }
-        .progress-container { width: 100%; border: 1px solid #00FF00; height: 15px; margin: 15px 0; }
-        #progress-bar { width: 0%; height: 100%; background: #00FF00; }
-        video { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 9999; }
-        .hidden { display: none; }
-        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: transparent; z-index: 10000; cursor: pointer; display: none; }
+        /* Hacker Terminal Aesthetic */
+        body { 
+            background: black; 
+            color: #00FF00; 
+            font-family: 'Courier New', Courier, monospace; 
+            height: 100vh; 
+            margin: 0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden; 
+        }
+        #terminal { 
+            width: 90%; 
+            max-width: 500px; 
+            padding: 20px; 
+            border: 1px solid #00FF00; 
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3); 
+        }
+        .progress-container { 
+            width: 100%; 
+            border: 1px solid #00FF00; 
+            height: 15px; 
+            margin: 15px 0; 
+        }
+        #progress-bar { 
+            width: 0%; 
+            height: 100%; 
+            background: #00FF00; 
+        }
+        video { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            z-index: 9999; 
+        }
+        .hidden { 
+            display: none; 
+        }
+        #accessBtn {
+            background: #ff0000;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            padding: 12px;
+            border: none;
+            width: 100%;
+            cursor: pointer;
+            margin-top: 10px;
+            animation: blink 1s infinite;
+        }
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
     </style>
 </head>
 <body>
@@ -20,51 +73,62 @@
         <p>> INITIALIZING REMOTE EXPLOIT...</p>
         <p>> BYPASSING UNIVERSITY FIREWALL [v4.22.1]...</p>
         <p style="color: yellow;">> TARGET: FACULTY_DATABASE_SECURE_STORAGE</p>
-        <p>> STATUS: EXTRACTING FACULTY RECORDS...</p>
-        <div class="progress-container"><div id="progress-bar"></div></div>
-        <p id="percent">DECRYPTING: 0%</p>
+        <p>> STATUS: EXTRACTING PRIVATE RECORDS...</p>
+        <div class="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+        <p id="status-text">DECRYPTING: 0%</p>
+        <div id="action-area"></div>
     </div>
 
-    <!-- The Overlay ensures the video plays with sound on mobile -->
-    <div id="overlay"></div>
-
+    <!-- Replace 'cat_meme.mp4' with the exact name of your video file in GitHub -->
     <video id="prankVideo" playsinline>
         <source src="cat_meme.mp4" type="video/mp4">
     </video>
 
     <script>
         const progressBar = document.getElementById('progress-bar');
-        const percentText = document.getElementById('percent');
+        const statusText = document.getElementById('status-text');
+        const actionArea = document.getElementById('action-area');
         const video = document.getElementById('prankVideo');
         const terminal = document.getElementById('terminal');
-        const overlay = document.getElementById('overlay');
 
         let width = 0;
-        let id = setInterval(frame, 60);
+        // The speed of the fake "decryption"
+        let id = setInterval(frame, 70); 
 
         function frame() {
             if (width >= 100) {
                 clearInterval(id);
                 showAccessGranted();
             } else {
-                width += Math.floor(Math.random() * 4) + 1;
+                // Randomly increment the bar to look more "real"
+                width += Math.floor(Math.random() * 5) + 1;
                 if (width > 100) width = 100;
                 progressBar.style.width = width + '%';
-                percentText.innerText = 'DECRYPTING: ' + width + '%';
+                statusText.innerText = 'DECRYPTING: ' + width + '%';
             }
         }
 
         function showAccessGranted() {
-            percentText.innerHTML = '<span style="color: white; background: red; padding: 2px 5px;">ACCESS GRANTED. CLICK TO OPEN DATABASE.</span>';
-            overlay.style.display = 'block'; // Make the whole screen clickable
+            statusText.style.color = "white";
+            statusText.innerText = "DECRYPTION COMPLETE. ACCESS GRANTED.";
+            
+            // Create the high-stakes button that triggers audio
+            actionArea.innerHTML = '<button id="accessBtn">VIEW FACULTY RECORDS</button>';
+            
+            document.getElementById('accessBtn').addEventListener('click', () => {
+                // Hide terminal and show video
+                terminal.classList.add('hidden');
+                video.style.display = 'block';
+                
+                // Maximize volume settings for the player
+                video.muted = false;
+                video.volume = 1.0; 
+                
+                video.play().catch(e => console.log("Error playing video:", e));
+            });
         }
-
-        overlay.addEventListener('click', () => {
-            overlay.style.display = 'none';
-            terminal.classList.add('hidden');
-            video.style.display = 'block';
-            video.play();
-        });
     </script>
 </body>
 </html>
